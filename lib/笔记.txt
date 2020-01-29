@@ -1,0 +1,45 @@
+
+Provider 学习笔记
+========为什么Provider不能用于监听状态变化===============
+1.继承关系
+  Provider:                  Provider -> InheritedProvider -> SingleChildStatelessWidget
+  ChangeNotifierProvider:    ChangeNotifierProvider-> ListenableProvider ->  InheritedProvider -> SingleChildStatelessWidget
+
+ChangeNotifierProvider 继承ListenableProvider
+1. 其中 _startListening 这个方法用于添加 state的监听 从而可以通过数据的变化来通知刷新UI
+2. 在markNeedsNotifyDependents 内部 执行了 markNeedsBuild(); 这与StatefulWidget 中setState 中 执行了 markNeedsBuild() 是一致的
+
+
+ static VoidCallback _startListening(InheritedContext<Listenable> e, Listenable value) {
+
+    value?.addListener(e.markNeedsNotifyDependents);
+
+    return () => value?.removeListener(e.markNeedsNotifyDependents);
+  }
+
+Provider 因为直接继承  InheritedProvider 并没有使用_startListening 添加监听
+所以Provider 不能用于监听状态变化 从而去重构widget
+
+
+
+================= listen的作用是什么=============
+ Provider中使用 Provider.of<ChangeState>(context,listen: false).add()
+ 中这个 of 方法去用于获取state对象 要把listen = false 原因为为什么避免无意义的build 提升性能
+ 1.源码如下
+        if (listen) {
+             context.dependOnInheritedElement(inheritedElement as InheritedElement);
+           }
+     （1） . 这个  dependOnInheritedElement 方法就是给widget注册了依赖关系
+      (2) . 这样就会导致所有被注册依赖关系的子组件的build()方法就被调用
+      (3) . 这样做存在的问题就是 我需要更新状态的widget 可能只是n多个子widget中的一个 但是所有的子widget都被重新build了
+ 2.设置listen = false 可以避免过多调用无关子widget的build() 从而提升性能
+
+==============为什么Provider中 listen 还要提供 默认实现 而且=true ?====
+
+1.从源码中的assert 中给的提示可以看的出来 默认listen = true 可能是Provider在提醒开发者这样做的代价，
+而且官方不建议这么做,所以要显示的设置listen=false。
+
+2. 在debug模式中 必须要设置 listen = false, 当然如果 一不小心设置为true 那么在relese中 除了不必要的性能消耗之外
+ 也不会造成太大的问题
+
+3. 如果非要在debug中使用 listen = true 怎么办，那么我觉得 你可以把源码中的断言注释掉。。。 哈哈
