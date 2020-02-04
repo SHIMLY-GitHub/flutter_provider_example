@@ -14,14 +14,19 @@ import 'package:provider/provider.dart';
 void main() {
 
   Provider.debugCheckInvalidValueType = null;
-  runApp(MyApp());
+
+  Widget app = MyApp();
+
+
+  runApp(app);
+
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    Widget w =  MaterialApp(
 
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -29,6 +34,9 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
+
+
+    return  w;
 
   }
 }

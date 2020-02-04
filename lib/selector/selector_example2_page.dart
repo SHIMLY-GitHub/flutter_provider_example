@@ -24,12 +24,13 @@ class SelectorExample2Page extends StatelessWidget {
                     style: Theme.of(context).textTheme.display1
                 );
               }, selector: (BuildContext context, SelectorState state){
+                print("text1的selector执行");
                  return state.count1;
               },shouldRebuild: (previous,next){
                 ///用来从外部指定 当关联状态没有变化的时候 是否需要重绘
                 ///默认情况下 previous!= next 也许在某些情况下 需要自定义返回结果 比如previous.customObject1 !=  next.customObject1
                 ///必须具备可比较性
-                return previous == next;
+                return previous != next;
               },),
 
               Selector(builder: (context,count2,child){
@@ -68,7 +69,7 @@ class IncrementCounterButton extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () {
 
-        Provider.of<SelectorState>(context,listen: false).add2();
+        Provider.of<SelectorState>(context,listen: false).add1();
       },
       tooltip: 'Increment',
       child: const Icon(Icons.add),

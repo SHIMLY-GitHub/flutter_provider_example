@@ -3,8 +3,6 @@ import 'package:flutter_provider_example/provider/cart_state.dart';
 import 'package:provider/provider.dart';
 
 
-
-
 class ProviderValuePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
