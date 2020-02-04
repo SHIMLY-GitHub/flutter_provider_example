@@ -1,0 +1,15 @@
+statelessWidget -> widget
+statefulWidget -> widget
+ProxyWidget   -> widget
+
+InheritedWidget -> ProxyWidget->  Widget
+
+RenderObjectWidget->widget
+
+LeafRenderObjectWidget->RenderObjectWidget->widget
+
+SingleChildRenderObjectWidget->RenderObjectWidget->widget
+
+MultiChildRenderObjectWidget->RenderObjectWidget->widget
+
+ErrorWidget->LeafRenderObjectWidget->RenderObjectWidget->widget

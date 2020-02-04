@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 import 'package:flutter_provider_example/djy_provider/my_car_state.dart';
 import 'package:flutter_provider_example/djy_provider/provider/djy_change_notifier_provider.dart';
 import 'package:flutter_provider_example/djy_provider/provider/djy_consumer.dart';
+
 class MyCarPage extends StatefulWidget {
   @override
   _MyCarPageState createState() => _MyCarPageState();
@@ -20,20 +22,34 @@ class _MyCarPageState extends State<MyCarPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-               DjyConsumer<MyCarState>(
-                 builder: (context,mystate){
 
+               DjyConsumer<MyCarState>(
+
+                 builder: (context,mystate){
+                   print("text1 重绘");
                    return Text(
-                     "${mystate.count}",
+                     "${mystate.count1}",
                      style: Theme.of(context).textTheme.display2,
                    );
                  },
+
                ),
+              DjyConsumer<MyCarState>(
+                builder: (context,mystate){
+                  print("text2 重绘");
+                  return Text(
+                    "${mystate.count2}",
+                    style: Theme.of(context).textTheme.display2,
+                  );
+                },
+
+              ),
 
               Builder(builder: (context){
+
                 return Text(
 
-                  "${DjyChangeNotifierProvider.of<MyCarState>(context).count}",
+                  "${DjyChangeNotifierProvider.of<MyCarState>(context).count1}",
 
                   style: Theme.of(context).textTheme.display1,
                 );
@@ -59,7 +75,7 @@ class IncrementCounterButton extends StatelessWidget {
     print(" IncrementCounterButton 重新buid");
     return FloatingActionButton(
       onPressed: () {
-       DjyChangeNotifierProvider.of<MyCarState>(context,listen: false).add();
+       DjyChangeNotifierProvider.of<MyCarState>(context,listen: false).add1();
       },
       tooltip: 'Increment',
       child: const Icon(Icons.add),

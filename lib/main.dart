@@ -5,8 +5,12 @@ import 'package:flutter_provider_example/changeNotifierProvider/change_notifier_
 import 'package:flutter_provider_example/future_provider/future_provider_page.dart';
 
 import 'package:flutter_provider_example/djy_provider/my_car_page.dart';
-
+import 'package:flutter_provider_example/multiProvider/multiProvider_page.dart';
+import 'package:flutter_provider_example/selector/selector_example1_page.dart';
+import 'package:flutter_provider_example/proxyProvider/proxy_provider_page.dart';
 import 'package:provider/provider.dart';
+
+
 void main() {
 
   Provider.debugCheckInvalidValueType = null;
@@ -84,6 +88,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
               },
               child: Text("ChangeNotifierProvider 的用法"),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                  return SelectorExample1Page();
+                }));
+              },
+              child: Text("selector的用法"),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                  return ProxyProviderPage();
+                }));
+              },
+              child: Text("proxyProvider"),
+            ),
+
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                  return MultiProviderPage();
+                }));
+
+              },
+              child: Text("MultiProvider 的用法"),
             ),
             GestureDetector(
               onTap: (){

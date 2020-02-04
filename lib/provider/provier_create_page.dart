@@ -15,10 +15,12 @@ class ProviderCreatePage extends StatelessWidget {
 
     return Provider<CartState>(
       create:(context){
+        print(context);
 
         return CartState();
 
       },
+
 
 
       child: Scaffold(

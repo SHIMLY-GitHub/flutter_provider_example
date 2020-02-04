@@ -1,5 +1,29 @@
 
+
+状态管理的原则：
+
+1.如果状态是组件私有的，则应该由组件自己管理；
+
+2.如果状态要跨组件共享，则该状态应该由各个组件共同的父元素来管理
+
+3. 如果从pageA 跳转到pageB 这时候在 pageB中就可以使用 provider.value 这个方法接收从 pageA中传过来的状态model
+
+
 Provider 学习笔记
+
+=========================================================
+
+1.子widget 获取state值的时候 其实是通过 _inheritedWidgets获取到 hasMap的时间复杂度为 O(1)
+2.以runTimeType 为key 也就是 _DefaultInheritedProviderScope<MyCarState> value 就是 对应的element对象
+
+
+ InheritedElement getElementForInheritedWidgetOfExactType<T extends InheritedWidget>() {
+    assert(_debugCheckStateIsActiveForAncestorLookup());
+    final InheritedElement ancestor = _inheritedWidgets == null ? null : _inheritedWidgets[T];
+    return ancestor;
+  }
+
+
 ========为什么Provider不能用于监听状态变化===============
 1.继承关系
   Provider:                  Provider -> InheritedProvider -> SingleChildStatelessWidget
@@ -7,7 +31,8 @@ Provider 学习笔记
 
 ChangeNotifierProvider 继承ListenableProvider
 1. 其中 _startListening 这个方法用于添加 state的监听 从而可以通过数据的变化来通知刷新UI
-2. 在markNeedsNotifyDependents 内部 执行了 markNeedsBuild(); 这与StatefulWidget 中setState 中 执行了 markNeedsBuild() 是一致的
+2. 在markNeedsNotifyDependents 内部 执行了 markNeedsBuild();
+ 这与StatefulWidget 中setState 中 执行了 markNeedsBuild() 是一致的
 
 
  static VoidCallback _startListening(InheritedContext<Listenable> e, Listenable value) {
@@ -42,4 +67,18 @@ Provider 因为直接继承  InheritedProvider 并没有使用_startListening �
 2. 在debug模式中 必须要设置 listen = false, 当然如果 一不小心设置为true 那么在relese中 除了不必要的性能消耗之外
  也不会造成太大的问题
 
-3. 如果非要在debug中使用 listen = true 怎么办，那么我觉得 你可以把源码中的断言注释掉。。。 哈哈
+3. 如果非要在debug中使用 listen = true 怎么办，那么我觉得 你可以把源码中的断言注释掉
+
+4. Consumer 中使用 Provider.of<T>(context) 这里的listen = true 用于注册父子组件的依赖关系
+
+============ create 和 value 区别是什么======================
+
+1.create 可用于创建一个新的state对象 而 value 适用于管理一个已存在的state对象
+遵循谁创建谁销毁的原则 state 对象在  create 中创建 也应该在create 中销毁
+
+2.使用value创建一个对象 比如 value: new Object() 会导致内存泄露，因为在value 的实现中
+没有dispose 这个操作，内存创建了 但是并没有销毁
+
+
+
+

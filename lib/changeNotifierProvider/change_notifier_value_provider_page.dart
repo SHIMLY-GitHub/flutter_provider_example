@@ -14,6 +14,7 @@ class _ChangeNotifierValueProviderPageState extends State<ChangeNotifierValuePro
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
         value: widget.changeState,
+
         child: Scaffold(
           appBar: AppBar(title: Text("value"),),
           body: Center(

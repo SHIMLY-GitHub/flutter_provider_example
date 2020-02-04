@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CartState {
+class CartState extends ChangeNotifier {
 
 
   int _count = 13;

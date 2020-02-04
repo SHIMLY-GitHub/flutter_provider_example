@@ -7,9 +7,10 @@ class ChangeNotoifiterProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    print("重构build");
     return ChangeNotifierProvider(
       create: (_)=>ChangeState(),
+
       lazy: false,
       child: Scaffold(
         appBar: AppBar(
@@ -19,7 +20,9 @@ class ChangeNotoifiterProvider extends StatelessWidget {
         body: Center(
 
             child: Consumer<ChangeState>(
-              builder: (context,changeState,_){
+              builder: (context,changeState,widget){
+
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -27,6 +30,14 @@ class ChangeNotoifiterProvider extends StatelessWidget {
                         "${changeState.count}",
                         style: Theme.of(context).textTheme.display1
                     ),
+
+                    GestureDetector(
+                      onTap: (){
+                        changeState.add();
+                      },
+                      child: Text("点击数字+1"),
+                    ),
+
                     GestureDetector(
                       onTap: (){
                         Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
@@ -41,6 +52,8 @@ class ChangeNotoifiterProvider extends StatelessWidget {
 
                 );
               },
+              child: Text("世界你好"),
+
             ),
         ),
         floatingActionButton: IncrementCounterButton(),
@@ -57,11 +70,11 @@ class IncrementCounterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("重构build");
+
     return FloatingActionButton(
       onPressed: () {
 
-       Provider.of<ChangeState>(context,listen: true).add();
+       Provider.of<ChangeState>(context,listen: false).add();
       },
       tooltip: 'Increment',
       child: const Icon(Icons.add),
